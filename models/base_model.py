@@ -2,9 +2,12 @@
 
 import uuid
 from datetime import datetime
-import models
+
 
 
 class BaseModel:
-    """ """
+    """The base class."""
     def __init__(self, *args, **kwargs):
+        """
+        Initializes a BaseModel instance with a unique identifier.
+        """
