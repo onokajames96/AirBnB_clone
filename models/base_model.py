@@ -2,6 +2,7 @@
 
 import uuid
 from datetime import datetime
+import models
 
 
 
@@ -15,7 +16,7 @@ class BaseModel:
             for key, value in kwargs.items():
                 if key != '__ class__':
                     if key == "created_at" or key == "updated_at":
-                        self.__dict__[k] = datetime.strptime(v, "%Y-%m-%dT%H:%M:%S.%f")
+                        self.__dict__[key] = datetime.strptime(value, "%Y-%m-%dT%H:%M:%S.%f")
                     else:
                         self.__dict__[key] = value
             if 'id' not in kwargs:
@@ -30,6 +31,9 @@ class BaseModel:
             self.updated_at = self.created_at
             storage.new(self)
 
+    def __str__(self):
+        return "[{}] ({}) {}".format(self.__class__.__name__, self.id, self.__dict__)
+
     def save(self):
         """
         Updates the 'updated_at' attribute with the current datetime.
@@ -38,4 +42,9 @@ class BaseModel:
         storage.save()
 
     def to_dict(self):
-
+        class_name = self.__class__.__name__
+        obj_dict = self.__dict__.copy()
+        obj_dict['__class__'] = class_name
+        obj_dict['created_at'] = self.created_at.isoformat()
+        obj_dict['updated_at'] = self.updated_at.isoformat()
+        return obj_dict
