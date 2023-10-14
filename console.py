@@ -3,7 +3,7 @@
 
 import cmd
 import re
-from shlex import split
+
 from models import storage
 from models.base_model import BaseModel
 from models.user import User
@@ -12,24 +12,6 @@ from models.city import City
 from models.amenity import Amenity
 from models.place import Place
 from models.review import Review
-
-
-def parse(arg):
-    curly_braces = re.search(r"\{(.*?)\}", arg)
-    brackets = re.search(r"\[(.*?)\]", arg)
-    if curly_braces is None:
-        if brackets is None:
-            return [i.strip(",") for i in split(arg)]
-        else:
-            lexer = split(arg[:brackets.span()[0]])
-            retl = [i.strip(",") for i in lexer]
-            retl.append(brackets.group())
-            return retl
-    else:
-        lexer = split(arg[:curly_braces.span()[0]])
-        retl = [i.strip(",") for i in lexer]
-        retl.append(curly_braces.group())
-        return retl
 
 
 class HBNBCommand(cmd.Cmd):
@@ -100,8 +82,8 @@ class HBNBCommand(cmd.Cmd):
         """Display the a given id of a class.
         """
         argl = parse(arg)
-        objdict = storage.all()
-        if len(argl) == 0:
+        obj_dict = storage.all()
+        if len(arg_list) == 0:
             print("** class name missing **")
         elif argl[0] not in HBNBCommand.__classes:
             print("** class doesn't exist **")
