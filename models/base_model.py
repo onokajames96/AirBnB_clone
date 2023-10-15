@@ -9,6 +9,8 @@ class BaseModel:
         """
         Initializes a BaseModel instance with a unique identifier.
         """
+        from models import storage
+
         if kwargs:
             for key, value in kwargs.items():
                 if key != '__ class__':
