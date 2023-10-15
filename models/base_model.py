@@ -1,7 +1,9 @@
 #!/usr/bin/python3
-
+"""The Class BaseModel."""
 import uuid
 from datetime import datetime
+
+
 class BaseModel:
     """The base class."""
     def __init__(self, *args, **kwargs):
@@ -30,6 +32,7 @@ class BaseModel:
             storage.new(self)
 
     def __str__(self):
+        """String representaion returned."""
         return "[{}] ({}) {}".format(self.__class__.__name__, self.id, self.__dict__)
 
     def save(self):
@@ -40,6 +43,7 @@ class BaseModel:
         storage.save()
 
     def to_dict(self):
+        """Creates a dictionary containing all keys/values."""
         class_name = self.__class__.__name__
         obj_dict = self.__dict__.copy()
         obj_dict['__class__'] = class_name
