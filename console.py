@@ -113,48 +113,35 @@ class HBNBCommand(cmd.Cmd):
 
     def do_update(self, arg):
         """Update an instance attr."""
-        argl = parse(arg)
-        objdict = storage.all()
+        args = shlex.split(arg)
+        if not args:
+            print('** class name missing **')
+            return
 
-        if len(argl) == 0:
-            print("** class name missing **")
-            return False
-        if argl[0] not in HBNBCommand.__classes:
+        class_name = args[0]
+        if class_name not in self.classes:
             print("** class doesn't exist **")
-            return False
-        if len(argl) == 1:
-            print("** instance id missing **")
-            return False
-        if "{}.{}".format(argl[0], argl[1]) not in objdict.keys():
-            print("** no instance found **")
-            return False
-        if len(argl) == 2:
-            print("** attribute name missing **")
-            return False
-        if len(argl) == 3:
-            try:
-                type(eval(argl[2])) != dict
-            except NameError:
-                print("** value missing **")
-                return False
+            return
 
-        if len(argl) == 4:
-            obj = objdict["{}.{}".format(argl[0], argl[1])]
-            if argl[2] in obj.__class__.__dict__.keys():
-                valtype = type(obj.__class__.__dict__[argl[2]])
-                obj.__dict__[argl[2]] = valtype(argl[3])
-            else:
-                obj.__dict__[argl[2]] = argl[3]
-        elif type(eval(argl[2])) == dict:
-            obj = objdict["{}.{}".format(argl[0], argl[1])]
-            for key, value in eval(argl[2]).items():
-                if (key in obj.__class__.__dict__.keys() and
-                        type(obj.__class__.__dict__[key]) in {str, int, float}):
-                    valtype = type(obj.__class__.__dict__[key])
-                    obj.__dict__[key] = valtype(value)
+        if len(args) < 2:
+            print('** instance id missing **')
+            return
+
+        key = class_name + '.' + args[1]
+        instance_dict = storage.all()
+        if key in instance_dict:
+            if len(args) > 2:
+                if len(args) < 4:
+                    print('** value missing **')
                 else:
-                    obj.__dict__[key] = value
-        storage.save()
+                    attribute = args[2]
+                    value = args[3][1:-1]
+                    setattr(instance_dict[key], attribute, value)
+                    instance_dict[key].save()
+            else:
+                print('** attribute name missing **')
+        else:
+            print('** no instance found **')
 
 
 if __name__ == "__main__":
