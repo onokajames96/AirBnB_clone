@@ -1,8 +1,19 @@
 body {
+<<<<<<< HEAD
 	margin: 0px;
 	padding: 0px;
 	height: 100%;
 	color: #484848;
 	font-family: Circular,"Helvetica Neue",Helvetica,Arial,sans-serif;
 	font-size: 14px;
+=======
+	height: 100%;
+	margin: 0%;
+	padding: 0%;
+	color: #484848;
+	font-family: Circular,"Helvetica Neue",Helvetica,Arial,sans-serif;
+	font-size: 14px;
+	display: flex;
+	flex-direction: column;
+>>>>>>> 36dce3d1f52056702b305a4a615ba3af8a1f9ba0
 }

@@ -1,9 +1,7 @@
 #!/usr/bin/python3
-
+"""The Class BaseModel."""
 import uuid
 from datetime import datetime
-import models
-
 
 
 class BaseModel:
@@ -12,6 +10,8 @@ class BaseModel:
         """
         Initializes a BaseModel instance with a unique identifier.
         """
+        from models import storage
+
         if kwargs:
             for key, value in kwargs.items():
                 if key != '__ class__':
@@ -32,6 +32,7 @@ class BaseModel:
             storage.new(self)
 
     def __str__(self):
+        """String representaion returned."""
         return "[{}] ({}) {}".format(self.__class__.__name__, self.id, self.__dict__)
 
     def save(self):
@@ -42,6 +43,7 @@ class BaseModel:
         storage.save()
 
     def to_dict(self):
+        """Creates a dictionary containing all keys/values."""
         class_name = self.__class__.__name__
         obj_dict = self.__dict__.copy()
         obj_dict['__class__'] = class_name
